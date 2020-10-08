@@ -297,12 +297,18 @@ def parse(src):
             if not s[n]: continue
             if s[n] == ":":
                 if n%2 != 0: raise RuntimeError("parse error at app: unexpected ':'")
-                addName(names, local, s[n+1])
+                if (not re.sub(r"\.0*[1-9]+[0-9]*","",s[n+1])) or (not re.sub("'0*[1-9]+[0-9]*|'","",s[n+1])):
+                    raise RuntimeError("parse error at app: illegal name")
+                else: addName(names, local, s[n+1])
                 s[n] = ""
                 s[n+1] = ""
             elif s[n][0] == "'":
                 s[n] = s[n][1:]
-                if s[n].isnumeric(): s[n] = int(s[n])
+                if s[n].isnumeric(): 
+                    if int(s[n]) != 0:
+                        s[n] = int(s[n])
+                    else:
+                        raise RuntimeError("parse error at app: ''' has no index")
                 elif not s[n]: s[n] = 1
                 else: raise RuntimeError("parse error at app: ''' has no index")
             else:
