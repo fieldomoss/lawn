@@ -77,3 +77,49 @@ Example comment:
 
     # I feel powerless #
 
+### Primitives
+
+Lawn has four primitive functions that are available on the stack at the beginning of execution.
+
+#### `in`
+
+Takes an arbitrary argument. Reads a character from standard input and returns it. If it receives EOF, it reutrns the arbitrary argument.
+
+#### `0`
+
+Character with value 0.
+
+**All charcters in Lawn are also comparing functions.** A character takes an argument. If the argument is a characater and is equivalent, the function returns Church Boolean True (λx.λy.x). Otherwise, it returns Church Boolean False (λx.λy.y).
+
+#### `suc`
+
+Takes a character with character code n and returns character with charcacter code n+1. If n = 255, it returns character 0. If it is passed something that is not a character, evaluation is halted.
+
+#### `out`
+
+Takes a character and prints it to standard out. If the argument is not a character, evaluation is halted.
+
+### Program Execution
+
+Lawn uses eager evaluation.
+
+1. Add primitves to the stack: `in, 0, suc, out`, with `out` topmost on the stack.
+1. Evaluation begins at the first function definition proceeds left-to-right.
+1. At a function definition, the interpreter creates a function closure with the entire current stack (with the exception of the current subject definition, of course), and pushes it to the stack.
+1. At a function application, the interpreter pushes the argument to the top of the stack saved in the closure and evalutes what it can immediately with the saved stack. The return value of the function is pushed to the top of the stack that called the function. Functions that take multiple arguments can be passed their arguments through successive applications of their returns to their arguments, in order. For example:
+    
+    ```2 .1 .2 ] : one
+    one out    # one out #
+    ' 0        # one out 0 => prints character 0 #```
+    
+1. At the end of a function, the interpreter returns the top value of the stack, and resumes evalutating the function that called it. Thus, if a function performs no applications, it will return the last argument it received. For example:
+
+    ```2 ] :foo
+    foo out
+    ' 0   # returns character 0, not function out #```
+
+1. At the end of the program, the interpreter passes the top of the stack as an argument to itself, and the return value of that function is the return value for the program.
+
+## Formal Definition
+
+See the [Grass website](http://www.blue.sky.or.jp/grass/). You think I understand this stuff???
