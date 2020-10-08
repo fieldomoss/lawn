@@ -297,7 +297,7 @@ def parse(src):
             if not s[n]: continue
             if s[n] == ":":
                 if n%2 != 0: raise RuntimeError("parse error at app: unexpected ':'")
-                if (not re.sub(r"\.0*[1-9]+[0-9]*","",s[n+1])) or (not re.sub("'0*[1-9]+[0-9]*|'","",s[n+1])):
+                if (not re.sub(r"\.0*[1-9]+[0-9]*","",s[n+1])) or (not re.sub("'0*[1-9]+[0-9]*|'","",s[n+1])) or (s[n+1] == ":"):
                     raise RuntimeError("parse error at app: illegal name")
                 else: addName(names, local, s[n+1])
                 s[n] = ""
