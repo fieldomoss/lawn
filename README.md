@@ -110,15 +110,19 @@ Evalutaion proceeds as follows:
 1. At a function definition, the interpreter creates a function closure with the entire current stack (with the exception of the current function definition, of course), and pushes it to the stack.
 1. At a function application, the interpreter pushes the argument to the top of the stack saved in the closure and evalutes what it can immediately with the saved stack. The return value of the function is pushed to the top of the stack that called the function. Functions that take multiple arguments can be passed their arguments through successive applications of their returns to their arguments, in order. For example:
     
-    ```2 .1 .2 ] : one
+    ```
+    2 .1 .2 ] : one
     one out    # one out #
     ' 0        # one out 0 => prints character 0 #
+    ```
     
 1. At the end of a function, the interpreter returns the top value of the stack, and resumes evalutating the function that called it. Thus, if a function performs no applications, it will return the last argument it received. For example:
 
-    ```2 ] : foo
+    ```
+    2 ] : foo
     foo out
     ' 0   # returns character 0, not function out #
+    ```
 
 1. At the end of the program, the interpreter passes the top of the stack as an argument to itself, and the return value of that function is the return value for the program.
 
