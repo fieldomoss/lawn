@@ -255,7 +255,7 @@ def parse(src):
     src = re.sub(r":", " : ", src) # split any ':' from their suroundings
     src = re.sub(r"]", " ] ", src) #split any ']' from their surroundings
     src = re.split(r"\s+", src) # split into chunks at spaces
-    while(not src[0].isnumeric()): #get rid of stuff before first function
+    while(not src[0].isnumeric() or src[0] == "0"): #get rid of stuff before first function
         src.pop(0)
 
     m=-1
