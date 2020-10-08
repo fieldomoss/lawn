@@ -26,7 +26,7 @@ A Lawn program consists of four components: function applications, function defi
 
 #### Function Applications
 
-A function aplication consists of two indexes, separated from the rest of the program and each other by whitespace. It calls the function of the first index to be applied to the function in the second index. Function and argument indices may be called by the following ways:
+A function aplication consists of two indexes, separated from the rest of the program and each other by whitespace. It calls the function of the first index to be applied to the value in the second index. Function and argument indices may be called by the following ways:
 
     '           Index 1 (top of stack)
     '<number>   Index <number>, where number is greater than 0.
@@ -45,7 +45,7 @@ A function defintion takes the form
 
     <arity> <aplications and labeling commands> ]
 
-where `<arity>` is a number greater than 0 representing the number of arguments the function takes. `<applications and labeling commands>` is a series of applications and labeling commands that the function will apply when called. Note that functions cannot be nested. A `]` closes the function definition. The interpreter treats `]` as ` ] `, so whitespace is optional around it.
+where `<arity>` is a number greater than 0 representing the number of arguments the function takes. `<applications and labeling commands>` is a series of applications and labeling commands that the interpreter will apply when the function is called. Note that functions cannot be nested. A `]` closes the function definition. The interpreter treats `]` as ` ] `, so whitespace is optional around it.
 
 When a function is defined, the interpreter automatically creates labels for each argument. These take the form `.<n>` where `<n>` is the number of the argument, in the order that they are passed to the function. So, a function with arity 4 would have argument labels `.1`, `.2`, `.3`, and `.4`.
 
@@ -60,8 +60,8 @@ A labeling command takes the form
     : <label>
     
 where label is a sting of characters. The interpreter treats `:` as ` : `, so whitespace is optional around it.
-A label may not contain `:` or `]`, nor may it be of the form `'` or `'<number ≥ 1>` or `.<number ≥ 1>`, to avoid collisions with other index referents.
-A label is unique, so a newly defined label may not be the same as an old one. Labels defined inside a function are local, and cannot be called outside of the function, and they must not collide with any any global labels created *before* the function definition.
+A label may not contain `:` or `]`, nor may it be of the form `'` or `'<number ≥ 1>` or `.<number ≥ 1>`, to avoid collisions with other index referents. The primitives have labels `in`, `0`, `suc`, and `out`, so these are not available to users either.
+A label is unique, so a newly defined label may not be the same as an old one. Labels defined inside a function are local, so they cannot be called outside of the function, and they must not collide with any any global labels created *before* the function definition.
 
 When a labeling command is processed, it attaches the label to the function on the top of the stack. It does not add anything to the top of the stack.
 
@@ -75,7 +75,7 @@ Anything between two `#`s is ignored by the interpreter.
 
 Example comment:
 
-    # I feel powerless #
+    # This comment does nothing but demonstrate itself. #
 
 ### Primitives
 
@@ -83,7 +83,7 @@ Lawn has four primitive functions that are available on the stack at the beginni
 
 #### `in`
 
-Takes an arbitrary argument. Reads a character from standard input and returns it. If it receives EOF, it reutrns the arbitrary argument.
+Takes an arbitrary argument. Reads a character from standard input and returns it. If it receives EOF, it returns the arbitrary argument.
 
 #### `0`
 
@@ -103,9 +103,11 @@ Takes a character and prints it to standard out. If the argument is not a charac
 
 Lawn uses eager evaluation.
 
+Evalutaion proceeds as follows:
+
 1. Add primitves to the stack: `in, 0, suc, out`, with `out` topmost on the stack.
-1. Evaluation begins at the first function definition proceeds left-to-right.
-1. At a function definition, the interpreter creates a function closure with the entire current stack (with the exception of the current subject definition, of course), and pushes it to the stack.
+1. Evaluation begins at the first function definition and proceeds left-to-right.
+1. At a function definition, the interpreter creates a function closure with the entire current stack (with the exception of the current function definition, of course), and pushes it to the stack.
 1. At a function application, the interpreter pushes the argument to the top of the stack saved in the closure and evalutes what it can immediately with the saved stack. The return value of the function is pushed to the top of the stack that called the function. Functions that take multiple arguments can be passed their arguments through successive applications of their returns to their arguments, in order. For example:
     
     ```2 .1 .2 ] : one
@@ -114,7 +116,7 @@ Lawn uses eager evaluation.
     
 1. At the end of a function, the interpreter returns the top value of the stack, and resumes evalutating the function that called it. Thus, if a function performs no applications, it will return the last argument it received. For example:
 
-    ```2 ] :foo
+    ```2 ] : foo
     foo out
     ' 0   # returns character 0, not function out #```
 
