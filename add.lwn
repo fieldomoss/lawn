@@ -1,0 +1,29 @@
+#ADDITION: ONE PLUS ONE!!
+by Thomas Quanci
+
+Define Church int 1, add it to itself, then use result to print "!" an equivalent number of times#
+
+#Church integer 1: \fa.f a#
+2 					#function def, arity 2#
+	.1 .2			#apply 1st argument to 2nd#
+] : one				#close function and label as "one"#
+
+#Add Church integers: \xyfa.y f (x f a)#
+4 					#function def, arity 4#
+	.1 .3			#apply first argument to third#
+	' .4			#apply top of stack to 4th arg#
+	.2 .3			#apply 2nd arg to 3rd#
+	' '2	 		#apply top of stack to 2nd thing on stack#
+] : add 			#close function and label as "add"#
+
+add one				#pass first argument to add#
+' one : two			#pass second argument to add, label as "two"#
+two suc				#make func that performs primitive suc twice#
+two ' #4x suc#		#4 times... etc#
+two ' #8x suc#
+two ' #16x suc#
+two ' #32x suc#
+' 0					#pass primitive 0 to 32x suc => character 32( )#
+suc ' : !			#suc 32 => character 33(!), label as "!"#
+two out				#take result of addition and pass it primitive out#
+' !					#pass '!' to the result, which prints "!!"#
