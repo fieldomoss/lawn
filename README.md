@@ -98,7 +98,7 @@ Takes a character with character code n and returns character with charcacter co
 
 #### `out`
 
-Takes a character and prints it to standard out. If the argument is not a character, evaluation is halted.
+Takes a character and prints it to standard out. The character is returned. If the argument is not a character, evaluation is halted.
 
 ### Program Execution
 
