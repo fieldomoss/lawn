@@ -131,6 +131,10 @@ Evalutaion proceeds as follows:
 
 See the [Grass website](http://www.blue.sky.or.jp/grass/). You think I understand this stuff???
 
+## Debug
+
+If you need to check the numeric value of the character outputs, `NUMERICAL_OUTPUT` on line 72 of lawn.py can be set to `True`.
+
 ## License
 
 The definition of this language is free for anyone to use or modify.
