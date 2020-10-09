@@ -45,7 +45,7 @@ A function defintion takes the form
 
     <arity> <aplications and labeling commands> ]
 
-where `<arity>` is a number greater than 0 representing the number of arguments the function takes. `<applications and labeling commands>` is a series of applications and labeling commands that the interpreter will apply when the function is called. Note that functions cannot be nested. A `]` closes the function definition. The interpreter treats `]` as ` ] `, so whitespace is optional around it.
+where `<arity>` is a number greater than 0 representing the number of arguments the function takes. `<applications and labeling commands>` is a series of applications and labeling commands that the interpreter will apply when the function is called. Note that functions cannot be nested. A `]` closes the function definition. The interpreter treats `']'` as `' ] '`, so whitespace is optional around it.
 
 When a function is defined, the interpreter automatically creates labels for each argument. These take the form `.<n>` where `<n>` is the number of the argument, in the order that they are passed to the function. So, a function with arity 4 would have argument labels `.1`, `.2`, `.3`, and `.4`.
 
@@ -59,7 +59,7 @@ A labeling command takes the form
 
     : <label>
     
-where label is a sting of characters. The interpreter treats `:` as ` : `, so whitespace is optional around it.
+where label is a sting of characters. The interpreter treats `':'` as `' : '`, so whitespace is optional around it.
 
 A label may not contain `:` or `]`, nor may it be of the form `'` or `'<number ≥ 1>` or `.<number ≥ 1>`, to avoid collisions with other index referents. The primitives have labels `in`, `0`, `suc`, and `out`, so these are not available to users either. A label may not consist solely of numeric characters, but may consist solely of two or more `0`s.
 A label is unique, so a newly defined label may not be the same as an old one. Labels defined inside a function are local, so they cannot be called outside of the function, and they must not collide with any any global labels created *before* the function definition.
