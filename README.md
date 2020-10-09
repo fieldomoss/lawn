@@ -60,7 +60,8 @@ A labeling command takes the form
     : <label>
     
 where label is a sting of characters. The interpreter treats `:` as ` : `, so whitespace is optional around it.
-A label may not contain `:` or `]`, nor may it be of the form `'` or `'<number ≥ 1>` or `.<number ≥ 1>`, to avoid collisions with other index referents. The primitives have labels `in`, `0`, `suc`, and `out`, so these are not available to users either.
+
+A label may not contain `:` or `]`, nor may it be of the form `'` or `'<number ≥ 1>` or `.<number ≥ 1>`, to avoid collisions with other index referents. The primitives have labels `in`, `0`, `suc`, and `out`, so these are not available to users either. A label may not consist solely of numeric characters, but may consist solely of two or more `0`s.
 A label is unique, so a newly defined label may not be the same as an old one. Labels defined inside a function are local, so they cannot be called outside of the function, and they must not collide with any any global labels created *before* the function definition.
 
 When a labeling command is processed, it attaches the label to the function on the top of the stack. It does not add anything to the top of the stack.
