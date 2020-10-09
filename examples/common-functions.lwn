@@ -1,0 +1,40 @@
+#common Lawn functions
+by Thomas Quanci#
+
+1 ] : move #moves item to top of stack: \x.x#
+
+2 move .1 ] : true #Church true: \xy.x#
+
+2 ] : false :zero #Church zero, Church false: \xy.y#
+
+2 .1 .2 ] : one #Church 1: \fa.f a#
+
+2 .1 .2 .1 '] : two #Church 2: \fa.f (f a)#
+
+3 .1 .2 ' .3 .2 ' ] : church-incr #add 1 to Church int: \nfa.f ((n f) a)#
+
+4 .1 .3 ' .4 : pre .2 .3 ' pre ] : church-add #Church addition: \mnfa.(n f) ((m f) a)#
+
+2 .1 .1 ' .2 ] : fix1 #\xy.(x x) y#
+2 fix1 .2 .1 ' ] : fix2 #\uv.u ((\xy.(x x) y) v)#
+1 fix2 .1 ' ' ] : fix #Z-combinator: \f.((\uv.u ((\xy.(x x) y) v)) f) ((\uv.u ((\xy.(x x) y) v)) f) #
+
+two suc : 2suc #run suc 2x#
+two ' : 4suc   #4x etc.#
+two ' : 8suc
+two ' : 16suc
+two ' : 32suc
+two ' : 64suc
+two ' : 128suc
+
+32suc 0 : space #char 32 ' '#
+suc ' : ! #char 33 '!'#
+
+1 suc .1 2suc ' 4suc ' 8suc ' 16suc ' 32suc ' 64suc ' 128suc ' ] : decr #subtract 1 from character#
+
+4 decr .2 .1 ' church-incr ' : rec 0 .2 ' zero ' rec ' .3 ' .4 ] : num1 #\rnfa.((0 n) zero (addone (r (decr n)))) f a #
+fix num1 : num #convert char to Church int#
+
+2 num .2 ' suc ' .1 ] : add #add chars#
+
+2 num .2 ' decr ' .1 ] : subt #subtract chars#

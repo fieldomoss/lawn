@@ -8,7 +8,7 @@ and prints an equivalent number of '!'s.
 This program takes a long time to execute, as the Z-combinator adds 
 a ton of complexity.#
 
-2 .1 .2 .1 ' ] : two #Church int 2: \fa.f f a #
+2 .1 .2 .1 ' ] : two #Church int 2: \fa.f (f a) #
 
 two suc : 2suc #run suc 2x#
 two ' : 4suc   #4x etc.#
@@ -18,10 +18,13 @@ two ' : 32suc
 two ' : 64suc
 two ' : 128suc
 
+32suc 0
+suc ' : ! #char 33 '!'#
+
 1 suc .1 2suc ' 4suc ' 8suc ' 16suc ' 32suc ' 64suc ' 128suc ' ] : decr
 #subtracts 1 from char arg by adding 255 (since we operate in mod 256)#
 
-3 .1 .2 ' .3 .2 ' ] : addone #takes a Church int and adds 1: \nfa.f (n f) a #
+3 .1 .2 ' .3 .2 ' ] : addone #takes a Church int and adds 1: \nfa.f ((n f) a) #
 
 2 ] : zero #Church int 0: \fa.a #
 
@@ -44,17 +47,14 @@ def conv(n):
 		return addone(r(n-1))
 
 in lambda calculus:
-\rnfa.((0 n) zero (addone r decr n)) f a #
+\rnfa.((0 n) zero (addone (r (decr n)))) f a #
 
-2 .1 .1 ' .2 ] : fix1 #\xy.x x y #
-2 fix1 .2 .1 ' ] : fix2 #\uv.u ((\xy.x x y) v) #
+2 .1 .1 ' .2 ] : fix1 #\xy.(x x) y #
+2 fix1 .2 .1 ' ] : fix2 #\uv.u ((\xy.(x x) y) v) #
 1 fix2 .1 ' ' ] : fix 
-#Z-combinator: \f.((\uv.u ((\xy.x x y) v)) f) ((\uv.u ((\xy.x x y) v)) f) #
+#Z-combinator: \f.((\uv.u ((\xy.(x x) y) v)) f) ((\uv.u ((\xy.(x x) y) v)) f) #
 
 fix num1 : num #allow recursion in num1#
-
-32suc 0
-suc ' : ! #char 33 '!'#
 
 in ! #get input from user, EOF defaults to !#
 num ' #convert input to Church int#
