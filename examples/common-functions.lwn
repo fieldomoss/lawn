@@ -1,26 +1,83 @@
 #common Lawn functions
-by Thomas Quanci#
+by Thomas Quanci
 
-1 ] : move #moves item to top of stack: \x.x#
+do not run this file.
 
-2 move .1 ] : true #Church true: \xy.x#
+Do not run this file.
 
-2 ] : false :zero #Church zero, Church false: \xy.y#
+Do Not Run This File.
+
+DO NOT RUN THIS FILE!#
+
+
+#BASIC FUNCS & CHURCH BOOLEANS#
+1 ] : id #moves item to top of stack, also the identity function: \x.x#
+
+2 id .1 ] : true : const #Church true, also creates a constant function of first arg: \xy.x#
+
+2 ] : false : zero : nil #Church zero, Church false, nil Church list: \xy.y#
+
+
+#CHURCH BOOLEAN OPERATIONS#
+2 .1 .2 ' .1 ] : and #\pq.p q p#
+
+2 .1 .1 ' .2 ] : or #\pq.p p q#
+
+1 .1 false ' true ] : not #\p.p false true#
+
+2 not .2 .1 ' ' .2 ] : xor #\pq.p (not q) q#
+
+3 .1 .2 ' .3 ] : if #\pab.p a b#
+#this one's kinda pointless tbh#
+
+
+#CHURCH ARITHMETIC#
+#zero defined above#
 
 2 .1 .2 ] : one #Church 1: \fa.f a#
 
 2 .1 .2 .1 '] : two #Church 2: \fa.f (f a)#
 
-3 .1 .2 ' .3 .2 ' ] : church-incr #add 1 to Church int: \nfa.f ((n f) a)#
+2 .1 .2 .1 ' .1 ' ] : three #Church 3: \fa.f (f (f a))#
 
-4 .1 .3 ' .4 : pre .2 .3 ' pre ] : church-add #Church addition: \mnfa.(n f) ((m f) a)#
+3 .1 .2 ' .3 .2 ' ] : church-suc #add 1 to Church int: \nfa.f (n f a)#
 
-2 .1 .1 ' .2 ] : fix1 #\xy.(x x) y#
-2 fix1 .2 .1 ' ] : fix2 #\uv.u ((\xy.(x x) y) v)#
-1 fix2 .1 ' ' ] : fix #Z-combinator: \f.((\uv.u ((\xy.(x x) y) v)) f) ((\uv.u ((\xy.(x x) y) v)) f) #
+4 .1 .3 ' .4 .2 .3 ' '2 ] : church-add #Church addition: \mnfa.n f (m f a)#
 
+3 .2 .1 .3 ']: church-pred1 #\fgh.h (g f)#
+3 church-pred1 .2 const .3 .1 '2 ' '2 ' id ] : church-pred #subtract 1 from Church int, return Church 0 if Church 0: \nfx.n (pred1 f) (const x) id#
+
+2 .2 church-pred ' .1 ] : church-subt #Church subtraction (a-b), returns Church 0 if result is less than 0: \ab.b churhc-pred a#
+
+4 .2 .3 .1 ' ' .4] : church-mult #Church multiplication: \mnfa.m (n f) a#
+
+2 .2 .1 ] : church-exp #\mn.n m#
+
+
+#CHURCH PREDICATES#
+1 true false .1 ' ' true ] : iszero #Checks if input is Church int 0: \n.n (const false) true#
+
+2 church-subt .1 ' .2 iszero ' ] : church-leq #Returns true if first Church int is <= second Church int, else returns false: \mn.iszero (church-subt m n)#
+
+2 church-leq .1 ' .2 : pre church-leq .2 ' .1 and ' ' pre ] : church-eq #returns true if church ints are equivalent: \mn.and (church-leq m n) (church-leq n m)#
+
+
+#CHURCH PAIRS AND LISTS#
+#nil list defined above#
+
+3 .3 .1 ' .2] : pair : cons #\abp.p a b#
+
+1 .1 true ] : first : head #\p.p true#
+
+1 .1 false ] : second : tail #\p.p false#
+
+3 id false ] : isnil1 #\htd.x#
+1 .1 isnil1 ' true ] : isnil #\l.l isnil1 true#
+
+
+#CHARACTERS#
 two suc : 2suc #run suc 2x#
-two ' : 4suc   #4x etc.#
+two ' : 4suc   # "      4x etc.#
 two ' : 8suc
 two ' : 16suc
 two ' : 32suc
@@ -30,11 +87,30 @@ two ' : 128suc
 32suc 0 : space #char 32 ' '#
 suc ' : ! #char 33 '!'#
 
-1 suc .1 2suc ' 4suc ' 8suc ' 16suc ' 32suc ' 64suc ' 128suc ' ] : decr #subtract 1 from character#
+1 suc .1 2suc ' 4suc ' 8suc ' 16suc ' 32suc ' 64suc ' 128suc ' ] : pred #subtract 1 from character by adding 255#
 
-4 decr .2 .1 ' church-incr ' : rec 0 .2 ' zero ' rec ' .3 ' .4 ] : num1 #\rnfa.((0 n) zero (addone (r (decr n)))) f a #
-fix num1 : num #convert char to Church int#
+1 pred .1 : pre 0 .1 ' 0 ' pre ] : 0pred #subtract 0 from character, or return char 0 if 0: \n.0 n 0 (pred n)#
 
-2 num .2 ' suc ' .1 ] : add #add chars#
+1 .1 suc ' 0 ] : char #convert church int to char: \n.n suc 0#
 
-2 num .2 ' decr ' .1 ] : subt #subtract chars#
+
+#RECURSIVE FUNCTIONS#
+#warning: super memory intensive, DO NOT USE for actual results#
+2 .1 .1 ' .2 ] : fix1 #\xy.x x y #
+2 fix1 .2 .1 ' ] : fix2 #\uv.u ((\xy.x x y) v) #
+1 fix2 .1 ' ' ] : fix #Z-combinator: \f.((\uv.u ((\xy.x x y) v)) f) ((\uv.u ((\xy.x x y) v)) f) #
+
+4 pred .2 .1 ' church-suc ' : rec 0 .2 ' zero ' rec ' .3 ' .4 ] : church1 #\rnfa.((0 n) zero (church-suc (r (pred n)))) f a #
+fix church1 : church #convert char to Church int#
+
+2 church .2 ' suc ' .1 ] : add #add chars#
+
+2 church .2 ' pred ' .1 ] : subt #subtract chars#
+
+5  church-subt .2 ' .3 .1 ' ' .3 church-suc ' : rec iszero .2 ' zero ' rec ' .4 ' .5] : church-div1 #\rndfa.((iszero n) zero (church-suc (r (church-subt n d) d) )) f a#
+fix church-div1 : church-div #divde first Church int by second#
+
+
+#END#
+
+out ! #just in case someone tries to run this (don't.)#
