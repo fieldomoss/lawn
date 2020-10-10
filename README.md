@@ -133,7 +133,7 @@ See the [Grass website](http://www.blue.sky.or.jp/grass/). You think I understan
 
 ## Debug
 
-If you need to check the numeric value of the character outputs, `NUMERICAL_OUTPUT` on line 72 of lawn.py can be set to `True`.
+If you need to check the numeric value of the character outputs, `NUMERICAL_OUTPUT` on lawn.py can be set to `True`. Setting `RELEASE` higher than the `DEBUG` values prints further info about the processing of the program.
 
 ## License
 
